@@ -1,52 +1,92 @@
 # Harshitpal1-Data-Cleaning-and-Processing-Data-Analytics
-# Elevate Data Analyst Internship: Task 1
+# Elevate Data Analyst Internship: Task 1 Submission
 
-## Data Cleaning and Preprocessing of the Customer Personality Analysis Dataset
+### Project: Data Cleaning and Preprocessing
 
-[cite_start]This repository contains the solution for Task 1 of the Elevate Data Analyst Internship[cite: 1]. [cite_start]The objective of this task was to perform data cleaning and preprocessing on a raw dataset[cite: 5].
+**Date:** August 6, 2025
 
-### 1. Dataset Used
+## 1. Project Overview
 
-* [cite_start]**Name:** Customer Personality Analysis [cite: 14]
-* **Source:** Kaggle
-* **Description:** This dataset contains information about customers, including their demographics, product purchases, and campaign responses. It is a suitable choice as it presents several common data quality issues.
+This repository contains the complete submission for **Task 1: Data Cleaning and Preprocessing** for the Elevate Data Analyst Internship. [cite_start]The objective was to take a raw dataset, perform necessary cleaning and preparation, and produce a final, analysis-ready dataset. [cite: 5] [cite_start]This process is a critical first step in the data analytics workflow, ensuring the quality and reliability of any subsequent analysis or modeling. [cite: 22, 24]
 
-### 2. Tools Used
+---
 
-* [cite_start]**Language:** Python [cite: 5]
-* [cite_start]**Library:** Pandas [cite: 5, 21]
+## 2. Dataset and Tools
 
-### 3. Data Cleaning and Preprocessing Steps
+* [cite_start]**Dataset:** [Customer Personality Analysis](https://www.kaggle.com/datasets/imakash3011/customer-personality-analysis) from Kaggle. [cite: 14] This dataset contains customer demographics, purchasing habits, and campaign responses.
+* **Tools Used:**
+    * [cite_start]**Language:** Python [cite: 5]
+    * [cite_start]**Libraries:** Pandas for data manipulation and analysis. [cite: 5, 21]
 
-A Jupyter Notebook (`data_cleaning.ipynb`) is included in this repository with the full Python code. [cite_start]The following is a summary of the key changes made to the dataset[cite: 6]:
+---
 
-* **Handling Missing Values:**
-    * [cite_start]I identified missing values in the 'Income' column using the `isnull().sum()` method.
-    * Given that 'Income' is a numerical column, I chose to fill the missing values with the median income. This approach avoids distortion from a few very high or low-income outliers.
+## 3. Summary of Data Cleaning Steps
 
-* **Renaming Column Headers:**
-    * [cite_start]To ensure consistency and ease of use, I renamed all column headers to be more uniform[cite: 11]. For example, `Dt_Customer` was changed to `date_customer`.
+The data cleaning was performed using a Python script, which is included in this repository. The key steps are summarized below:
 
-* **Data Type Conversion:**
-    * [cite_start]I checked the data types of all columns using `.info()`.
-    * [cite_start]The `date_customer` column was converted from an 'object' type to a 'datetime' type to enable proper time-series analysis.
+1.  **Loaded the Dataset:** The `marketing_campaign.csv` file was loaded into a Pandas DataFrame.
 
-* **Feature Engineering (Data Standardization):**
-    * I created a new feature called `age` from the `Year_Birth` column for easier analysis.
-    * I standardized several categorical features by creating new, more intuitive columns. For instance, I created a `marital_status` column that simplifies the categories from the original `Marital_Status` feature.
-    * I created a `total_children` feature by combining the `Kidhome` and `Teenhome` columns.
+2.  [cite_start]**Renamed Columns:** All column headers were standardized to a consistent format (lowercase with underscores, e.g., `Year_Birth` became `year_birth`) for easier access and readability. [cite: 11]
 
-* **Removing Duplicate Rows:**
-    * [cite_start]I checked for duplicate rows using `duplicated().sum()` and removed them using the `drop_duplicates()` function to ensure each record is unique.
+3.  **Handled Missing Values:** The `Income` column contained 24 missing values. [cite_start]These were identified using `isnull()` [cite: 8] and filled using the **median** income of the dataset. The median was chosen over the mean to avoid being skewed by a few extremely high-income values.
 
-* **Outlier Treatment:**
-    * I identified potential outliers in the `age` and `Income` columns using box plots.
-    * For this analysis, I decided to keep the outliers but documented their presence, as they could represent valid high-income earners or older customers. [cite_start]This is a critical step before performing analysis.
+4.  [cite_start]**Converted Data Types:** The `Dt_Customer` (date of customer enrollment) column was converted from a string object to a proper `datetime` format to enable date-based calculations. [cite: 10, 12]
 
-### 4. Deliverables
+5.  **Performed Feature Engineering:**
+    * Created a new `age` column by subtracting the `year_birth` from the current year.
+    * Created a `total_children` column by summing the `kid_home` and `teen_home` columns.
 
-* **`/datasets` folder:** Contains the original raw dataset and the final cleaned dataset.
-* [cite_start]**`data_cleaning.ipynb`:** The Jupyter Notebook with the Python (Pandas) code used for all cleaning steps[cite: 5, 21].
+6.  **Standardized Categorical Data:** The `Marital_Status` column had several inconsistent or rare values (`'YOLO'`, `'Alone'`, `'Absurd'`). These were grouped into broader, more meaningful categories: `'Partner'` and `'Single'`.
+
+7.  [cite_start]**Removed Duplicates:** The dataset was checked for any fully duplicated rows using `drop_duplicates()` [cite: 9] and none were found.
+
+8.  **Treated Outliers:** Basic outlier filtering was applied to remove records that were likely data entry errors. This included customers with an `age` over 90 or an `income` over 250,000.
+
+[cite_start]The final, cleaned dataset is saved as `cleaned_customer_data.csv` and is ready for analysis. [cite: 6]
+
+---
+
+## 4. Interview Questions & Answers
+
+**1. [cite_start]What are missing values and how do you handle them?** [cite: 26]
+Missing values are data points that are not recorded in a dataset, often represented as `NaN` or `NULL`. I handle them by first identifying them using `df.isnull().sum()`. The strategy depends on the situation:
+* **Removal:** If the number of missing values is very small, I might remove the rows using `dropna()`.
+* **Imputation:** If the feature is important, I fill the missing values. For numerical data, I use the **mean** or **median** (as I did with 'Income'). For categorical data, I use the **mode**.
+
+**2. [cite_start]How do you treat duplicate records?** [cite: 27]
+Duplicate records are identical rows in a dataset that can bias analysis. [cite_start]I identify them using `df.duplicated().sum()` and remove them using `df.drop_duplicates()` in Pandas to ensure every record is unique. [cite: 9]
+
+**3. [cite_start]Difference between `dropna()` and `fillna()` in Pandas?** [cite: 28]
+* `dropna()` **removes** rows or columns that contain one or more missing values.
+* `fillna()` **replaces** missing values with a specified value (like the mean, median, or a constant string). It fills the gaps instead of deleting them.
+
+**4. [cite_start]What is outlier treatment and why is it important?** [cite: 29]
+Outlier treatment is the process of identifying and managing data points that are significantly different from the rest of the data. It's crucial because outliers can skew statistical results (like the mean) and negatively affect the performance of machine learning models. Treatment can involve removing the outlier or transforming the data.
+
+**5. [cite_start]Explain the process of standardizing data.** [cite: 30]
+Data standardization is the process of bringing data into a uniform format. This includes:
+* Making sure text values are consistent (e.g., "USA" and "United States" become one standard).
+* [cite_start]Ensuring date formats are the same (e.g., all dates are `YYYY-MM-DD`). [cite: 10]
+* In machine learning, it also refers to scaling numerical features to a common range so that no single feature dominates the analysis.
+
+**6. [cite_start]How do you handle inconsistent data formats (e.g., date/time)?** [cite: 31]
+I handle inconsistent formats by converting them to a single, standard format. For dates and times, I use the `pd.to_datetime()` function in Pandas. [cite_start]This function can intelligently parse various string formats (like "04-09-2012" or "2012/09/04") and convert them into a consistent `datetime` object. [cite: 10]
+
+**7. [cite_start]What are common data cleaning challenges?** [cite: 32]
+Common challenges include:
+* **Structural Errors:** Typos, inconsistent capitalization, and mixed data types in a column.
+* **Missing Data:** Deciding on the best imputation strategy (mean, median, etc.).
+* **Outliers:** Determining if an extreme value is a genuine data point or an error.
+* **Large Datasets:** Performing cleaning operations efficiently without consuming too much memory.
+
+**8. [cite_start]How can you check data quality?** [cite: 33]
+I check data quality through **data profiling**. This involves using several Pandas functions:
+* `.info()` to check data types and non-null counts.
+* `.describe()` to get a statistical summary of numerical columns (mean, std, min, max).
+* `.value_counts()` to inspect the unique values and their frequencies in categorical columns.
+* `.isnull().sum()` to count missing values in each column.
+* Creating visualizations like histograms and box plots to see the data's distribution and identify outliers.
+e used for all cleaning steps[cite: 5, 21].
 * **`README.md`:** This summary file.
 
 By completing this task, I have gained practical experience in fixing common data issues and have prepared a structured dataset ready for analysis[cite: 20, 24].
